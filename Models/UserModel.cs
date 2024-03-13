@@ -7,11 +7,11 @@ namespace UsersMicroservice.Models {
     [Index(nameof(Username), IsUnique = true)]
     public class UserModel : BaseModel {
         [Required]
-        [Column("username")]
+        [Column("username", TypeName = "nvarchar(32)")]
         public string Username { get; set; }
 
         [Required]
-        [Column("password")]
+        [Column("password", TypeName = "nvarchar(256)")]
         public string Password { get; set; }
     }
 }

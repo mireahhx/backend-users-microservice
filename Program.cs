@@ -15,6 +15,7 @@ builder.Services.AddDbContext<ApplicationContext>(contextConfig => {
 });
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.WebHost.UseUrls(builder.Configuration.GetOrThrow("Users:Url"));
 
 builder.Services.AddMassTransit(massTransitConfig => {
     massTransitConfig.AddConsumer<GetUserByIdConsumer>();
@@ -30,18 +31,14 @@ builder.Services.AddMassTransit(massTransitConfig => {
         rabbitMqConfig.ReceiveEndpoint(builder.Configuration.GetOrThrow("Users:Endpoints:GetUserById:Queue"), endpointConfig => {
             endpointConfig.Bind(builder.Configuration.GetOrThrow("Users:Endpoints:GetUserById:Exchange"), exchangeConfig => {
                 exchangeConfig.RoutingKey = builder.Configuration.GetOrThrow("Users:Endpoints:GetUserById:RoutingKey");
-                exchangeConfig.ExchangeType = "direct";
+                exchangeConfig.ExchangeType = ExchangeType.Direct;
 
-                if (builder.Environment.IsDevelopment()) {
-                    exchangeConfig.AutoDelete = true;
-                    exchangeConfig.Durable = false;
-                }
+                exchangeConfig.AutoDelete = true;
+                exchangeConfig.Durable = false;
             });
 
-            if (builder.Environment.IsDevelopment()) {
-                endpointConfig.AutoDelete = true;
-                endpointConfig.Durable = false;
-            }
+            endpointConfig.AutoDelete = true;
+            endpointConfig.Durable = false;
 
             endpointConfig.ConfigureConsumer<GetUserByIdConsumer>(context);
         });
@@ -51,16 +48,12 @@ builder.Services.AddMassTransit(massTransitConfig => {
                 exchangeConfig.RoutingKey = builder.Configuration.GetOrThrow("Users:Endpoints:GetUserByUsername:RoutingKey");
                 exchangeConfig.ExchangeType = ExchangeType.Direct;
 
-                if (builder.Environment.IsDevelopment()) {
-                    exchangeConfig.AutoDelete = true;
-                    exchangeConfig.Durable = false;
-                }
+                exchangeConfig.AutoDelete = true;
+                exchangeConfig.Durable = false;
             });
 
-            if (builder.Environment.IsDevelopment()) {
-                endpointConfig.AutoDelete = true;
-                endpointConfig.Durable = false;
-            }
+            endpointConfig.AutoDelete = true;
+            endpointConfig.Durable = false;
 
             endpointConfig.ConfigureConsumer<GetUserByUsernameConsumer>(context);
         });
@@ -69,16 +62,12 @@ builder.Services.AddMassTransit(massTransitConfig => {
             endpointConfig.Bind(builder.Configuration.GetOrThrow("Users:Endpoints:CreateUser:Exchange"), exchangeConfig => {
                 exchangeConfig.ExchangeType = ExchangeType.Direct;
 
-                if (builder.Environment.IsDevelopment()) {
-                    exchangeConfig.AutoDelete = true;
-                    exchangeConfig.Durable = false;
-                }
+                exchangeConfig.AutoDelete = true;
+                exchangeConfig.Durable = false;
             });
 
-            if (builder.Environment.IsDevelopment()) {
-                endpointConfig.AutoDelete = true;
-                endpointConfig.Durable = false;
-            }
+            endpointConfig.AutoDelete = true;
+            endpointConfig.Durable = false;
 
             endpointConfig.ConfigureConsumer<CreateUserConsumer>(context);
         });

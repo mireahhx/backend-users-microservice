@@ -26,12 +26,12 @@ namespace UsersMicroservice.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("nvarchar(256)")
                         .HasColumnName("password");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("nvarchar(32)")
                         .HasColumnName("username");
 
                     b.HasKey("Id");
@@ -40,14 +40,6 @@ namespace UsersMicroservice.Migrations
                         .IsUnique();
 
                     b.ToTable("users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1u,
-                            Password = "$2a$11$RFzzdh6S8hwv5E3E9/FWHukiNhOU30KxDYxG/SwslOrCp7yMOI/R6",
-                            Username = "admin"
-                        });
                 });
 #pragma warning restore 612, 618
         }

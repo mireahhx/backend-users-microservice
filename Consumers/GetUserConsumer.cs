@@ -11,7 +11,7 @@ namespace UsersMicroservice.Consumers {
             var user = await _userService.GetUserById(context.Message.Id);
 
             if (!user.IsSuccess) {
-                await context.RespondAsync<ServiceError>(new() {
+                await context.RespondAsync<IServiceError>(new() {
                     Error = user.Error
                 });
             } else {
@@ -31,7 +31,7 @@ namespace UsersMicroservice.Consumers {
             var user = await _userService.GetUserByUsername(context.Message.Username);
 
             if (!user.IsSuccess) {
-                await context.RespondAsync<ServiceError>(new() {
+                await context.RespondAsync<IServiceError>(new() {
                     Error = user.Error
                 });
             } else {
